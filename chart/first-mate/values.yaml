@@ -3,7 +3,7 @@
 # TODO: Switch to a public image and use a versioned tag (default to chart version).
 image:
   pullPolicy: IfNotPresent
-  repository: docker.io/library/first-mate
+  repository: docker.io/chriswells/first-mate
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
