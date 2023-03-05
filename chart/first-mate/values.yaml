@@ -1,0 +1,85 @@
+# Default values for first-mate.
+
+# TODO: Switch to a public image and use a versioned tag (default to chart version).
+image:
+  pullPolicy: IfNotPresent
+  repository: docker.io/library/first-mate
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+replicaCount: 1
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1001
+
+affinity: {}
+nodeSelector: {}
+tolerations: []
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# By default, wait for the next schedule to try again:
+restartPolicy: Never
+# Run every hour on the hour (cron format):
+schedule: "0 * * * *"
+
+# Kinds of controllers whose images will be updated (cronjobs not yet supported):
+controllerKinds:
+  - daemonsets
+  - deployments
+  - statefulsets
+
+# No image will be upgraded from or to any version in this list:
+ignoredVersions:
+  - latest
+
+# Recommended, but requires cluster-level privileges:
+# To monitor multiple namespaces using a single instance of this chart,
+# define the ignored and/or monitored namespaces as shown below:
+namespaces:
+  ignored:
+    - kube-node-lease
+    - kube-public
+    - kube-system
+    - kubernetes-dashboard
+  # Specify a list of monitored namespaces to restrict the scope of monitoring.
+  # An empty/omitted list means "all namespaces that aren't in the ignored list."
+  # If a namespace is in both lists, it will be ignored.
+  # monitored: []
+# To use per-namespace instances of this chart, set namespaces to a "falsey" value
+# (e.g., null or an empty value). This prevents the ClusterRole and ClusterRoleBinding
+# from being created, and only the chart's namespace will be monitored for updates.
+# namespaces: null

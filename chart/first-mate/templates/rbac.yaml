@@ -1,0 +1,78 @@
+{{- if .Values.serviceAccount.create -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "first-mate.serviceAccountName" . }}
+  labels:
+    {{- include "first-mate.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+---
+{{- if .Values.namespaces }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "first-mate.fullname" . }}-cluster
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - list
+  - apiGroups:
+      - apps
+    resources:
+    {{- range $controllerKind := .Values.controllerKinds }}
+      - {{ $controllerKind }}
+    {{- end }}
+    verbs:
+      - get
+      - list
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "first-mate.fullname" . }}-cluster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "first-mate.fullname" . }}-cluster
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "first-mate.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+---
+{{- end }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "first-mate.fullname" . }}
+rules:
+  - apiGroups:
+      - apps
+    resources:
+    {{- range $controllerKind := .Values.controllerKinds }}
+      - {{ $controllerKind }}
+    {{- end }}
+    verbs:
+      - get
+      - list
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "first-mate.fullname" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "first-mate.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "first-mate.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}

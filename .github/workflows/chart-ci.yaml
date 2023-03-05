@@ -1,0 +1,38 @@
+name: Chart CI
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ chart/** ]
+
+jobs:
+  build-chart:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        # Use the GITHUB_TOKEN so the git push WILL NOT trigger any workflows (e.g., this same workflow).
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Increment the current patch version
+        run: |
+          CHART_VERSION=$(awk '$1 == "version:" { print $2; }' chart/first-mate/Chart.yaml)
+          CHART_VERSION_MAJOR_MINOR=$(echo ${CHART_VERSION} | sed -E 's/\.[0-9]+$//')
+          CHART_VERSION_PATCH=$(echo ${CHART_VERSION} | sed -E 's/([0-9.]+)([0-9]+)$/\2/')
+          NEW_CHART_VERSION=${CHART_VERSION_MAJOR_MINOR}.$((${CHART_VERSION_PATCH}+1))
+          echo "NEW_CHART_VERSION=${NEW_CHART_VERSION}" >> ${GITHUB_ENV}
+      - name: Update Chart.yaml with the new chart version
+        run: |
+          # Chart version does not have quotes around it.
+          sed -i "s/^version:.*$/version: ${{ env.NEW_CHART_VERSION }}/" chart/first-mate/Chart.yaml
+      - name: Commit the changed file
+        run: |
+          git config --global user.name 'Chris Wells'
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git add chart/first-mate/Chart.yaml
+          git commit -m "chore(release): bump chart version to ${{ env.NEW_CHART_VERSION }}"
+          git push
+      - name: Create a tag using the new chart version
+        run: |
+          git tag ${{ env.NEW_CHART_VERSION }}
+          git push --follow-tags
