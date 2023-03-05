@@ -16,7 +16,7 @@ Please refer to Helm's [documentation](https://helm.sh/docs) to get started.
 
 Once Helm has been set up correctly, add the repo as follows:
 
-  helm repo add first-mate https://chriswells0.github.io/first-mate
+    helm repo add first-mate https://chriswells0.github.io/first-mate
 
 If you had already added this repo earlier, run `helm repo update` to retrieve the latest versions of the packages.
 You can then run `helm search repo first-mate` to see the charts.
