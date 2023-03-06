@@ -33,11 +33,7 @@ jobs:
           git add chart/first-mate/Chart.yaml
           git commit -m "chore(release): bump chart version to ${{ env.NEW_CHART_VERSION }}"
           git push
-      - name: Create a tag using the new chart version
-        run: |
-          git tag ${{ env.NEW_CHART_VERSION }}
-          git push --follow-tags
-      - name: Create a release for the chart
+      - name: Create a tag and release for the chart
         uses: helm/chart-releaser-action@v1.5.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
