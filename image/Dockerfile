@@ -1,3 +1,4 @@
+
 FROM bitnami/kubectl:latest
 
 USER root
