@@ -1,13 +1,15 @@
-FROM bitnami/kubectl:latest
+FROM curlimages/curl:latest
 
 USER root
 
-RUN apt update && \
-	apt upgrade && \
-	apt-get install --no-install-recommends --no-install-suggests --yes curl && \
-	apt-get clean
+RUN apk --no-cache upgrade \
+	&& apk --no-cache add jq
 
 COPY semver.sh /
 RUN chmod +x /semver.sh
 
-USER 1001
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+RUN chmod +x ./kubectl \
+	&& mv ./kubectl /usr/local/bin
+
+USER curl_user

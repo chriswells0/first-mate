@@ -1,6 +1,5 @@
 # Default values for first-mate.
 
-# TODO: Switch to a public image and use a versioned tag (default to chart version).
 image:
   pullPolicy: IfNotPresent
   repository: docker.io/chriswells/first-mate
@@ -33,7 +32,8 @@ securityContext:
       - ALL
   readOnlyRootFilesystem: true
   runAsNonRoot: true
-  runAsUser: 1001
+  # curl_user is 100:
+  runAsUser: 100
 
 affinity: {}
 nodeSelector: {}

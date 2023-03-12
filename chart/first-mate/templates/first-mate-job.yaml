@@ -53,9 +53,6 @@ spec:
                   echo "NAMESPACES:
                   ${NAMESPACES}"
 
-                  # export KUBECONFIG=/usr/home/chris/Projects/Network/Cloud/vagrant-dev/configs/config
-                  # export KUBECONFIG=~/.kube/vke-personal.yaml
-
                   for NAMESPACE in ${NAMESPACES}; do
                     echo "
                   NAMESPACE: ${NAMESPACE}"
