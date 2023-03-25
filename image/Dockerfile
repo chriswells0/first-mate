@@ -13,3 +13,4 @@ RUN chmod +x ./kubectl \
 	&& mv ./kubectl /usr/local/bin
 
 USER curl_user
+
