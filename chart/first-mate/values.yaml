@@ -2,7 +2,7 @@
 
 image:
   pullPolicy: IfNotPresent
-  repository: docker.io/chriswells/first-mate
+  repository: docker.io/chriswells0/first-mate
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
