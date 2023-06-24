@@ -6,6 +6,7 @@ on:
     paths: [ image/** ]
 
 jobs:
+
   build-publish-image:
     runs-on: ubuntu-latest
     steps:
