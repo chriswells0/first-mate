@@ -11,7 +11,7 @@
 #
 repositoryID: 69bae226-29fa-4967-99e0-427e4ba32c3b
 owners: # (optional, used to claim repository ownership)
-  - name: chriswells
+  - name: chriswells0
 ignore: # (optional, packages that should not be indexed by Artifact Hub)
   # Ignore versions that end with -1, which only happens when there is a build error.
   - name: first-mate
