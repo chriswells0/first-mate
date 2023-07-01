@@ -1,4 +1,20 @@
 apiVersion: v1
 entries:
-  first-mate: []
-generated: "2023-07-01T10:53:04.351636054Z"
+  first-mate:
+  - apiVersion: v2
+    appVersion: 1.0.5
+    created: "2023-07-01T22:35:36.932698266Z"
+    description: First Mate monitors your Kubernetes "cargo" and automatically updates
+      container images when new versions are released.
+    digest: c9d12c7919ae1ffddadb49ac8ccaa54f2526e989cad60b9a4787f672c9d7f448
+    maintainers:
+    - name: Chris Wells
+      url: https://chriswells.io/
+    name: first-mate
+    sources:
+    - https://github.com/chriswells0/first-mate
+    type: application
+    urls:
+    - https://github.com/chriswells0/first-mate/releases/download/first-mate-1.0.5/first-mate-1.0.5.tgz
+    version: 1.0.5
+generated: "2023-07-01T22:35:36.932702966Z"
